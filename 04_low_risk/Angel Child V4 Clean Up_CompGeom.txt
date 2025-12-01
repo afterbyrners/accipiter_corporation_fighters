@@ -1,0 +1,28 @@
+...Comp Geom...
+1 Num Comps
+2 Total Num Meshes
+7888 Total Num Tris
+
+Theo_Area   Wet_Area   Theo_Vol    Wet_Vol  Name
+  706.655    706.655    239.727    239.727  Main Wing      
+  706.655    706.655    239.727    239.727  Main Wing      
+-------------------------------------------------
+ 1413.311   1413.311    479.454    479.454  Totals         
+
+Tag_Theo_Area   Tag_Wet_Area    Tag_Name
+      466.499        466.499    Main Wing_S_Surf0
+      466.499        466.499    Main Wing_S_Surf1
+       92.500         92.500    Main Wing_S_Surf0,TE Flaps
+       59.178         59.178    Main Wing_S_Surf0,LE Slats
+       63.697         63.697    Main Wing_S_Surf0,Fold Line
+       92.500         92.500    Main Wing_S_Surf1,TE Flaps
+       59.178         59.178    Main Wing_S_Surf1,LE Slats
+       63.697         63.697    Main Wing_S_Surf1,Fold Line
+       24.782         24.782    Main Wing_S_Surf0,Ailerons,Fold Line
+       24.782         24.782    Main Wing_S_Surf1,Ailerons,Fold Line
+
+ SS_Theo_Area    SS_Wet_Area    SS_Name
+      185.001        185.001    Main Wing,TE Flaps
+      118.356        118.356    Main Wing,LE Slats
+      176.957        176.957    Main Wing,Fold Line
+       49.564         49.564    Main Wing,Ailerons

@@ -1,0 +1,41 @@
+...Comp Geom...
+4 Num Comps
+6 Total Num Meshes
+5740 Total Num Tris
+
+Theo_Area   Wet_Area   Theo_Vol    Wet_Vol  Name
+  720.356    516.559    710.432    605.938  FuselageGeom   
+  173.675    110.783    108.637     82.423  DuctGeom       
+  173.675    110.783    108.637     82.423  DuctGeom       
+  218.477     36.791    223.009     44.667  F135PW100 TVC  
+  664.154    494.002    240.508    212.776  WingGeom       
+  664.154    494.002    240.508    212.776  WingGeom       
+-------------------------------------------------
+ 2614.493   1762.921   1631.731   1241.003  Totals         
+
+Tag_Theo_Area   Tag_Wet_Area    Tag_Name
+      696.536        492.739    FuselageGeom_S_Surf0
+      173.675        110.783    DuctGeom_S_Surf0
+      173.675        110.783    DuctGeom_S_Surf1
+      218.477         36.791    F135PW100 TVC_S_Surf0
+      490.412        320.261    WingGeom_S_Surf0
+      490.412        320.261    WingGeom_S_Surf1
+       23.820         23.820    FuselageGeom_S_Surf0,SS_ELLIP_0
+       35.480         35.480    WingGeom_S_Surf0,FoldingLine
+       41.125         41.125    WingGeom_S_Surf0,InboardElevon
+       37.219         37.219    WingGeom_S_Surf0,OutboardElevon
+       48.809         48.809    WingGeom_S_Surf0,Slats
+       35.480         35.480    WingGeom_S_Surf1,FoldingLine
+       41.125         41.125    WingGeom_S_Surf1,InboardElevon
+       37.219         37.219    WingGeom_S_Surf1,OutboardElevon
+       48.809         48.809    WingGeom_S_Surf1,Slats
+       11.109         11.109    WingGeom_S_Surf0,FoldingLine,SS_CONT_4
+       11.109         11.109    WingGeom_S_Surf1,FoldingLine,SS_CONT_4
+
+ SS_Theo_Area    SS_Wet_Area    SS_Name
+       23.820         23.820    FuselageGeom,SS_ELLIP_0
+       93.178         93.178    WingGeom,FoldingLine
+       82.251         82.251    WingGeom,InboardElevon
+       74.438         74.438    WingGeom,OutboardElevon
+       97.618         97.617    WingGeom,Slats 
+       22.217         22.217    WingGeom,SS_CONT_4

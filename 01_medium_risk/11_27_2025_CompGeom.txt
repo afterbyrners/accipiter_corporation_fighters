@@ -1,0 +1,52 @@
+...Comp Geom...
+6 Num Comps
+10 Total Num Meshes
+19240 Total Num Tris
+
+Theo_Area   Wet_Area   Theo_Vol    Wet_Vol  Name
+  325.054    179.348    178.865    126.198  Ducts          
+  325.054    179.348    178.865    126.198  Ducts          
+  957.684    529.840   1017.793    720.058  FuselageGeom   
+  792.852    575.736    290.147    269.424  MainWing       
+  792.852    575.736    290.147    269.424  MainWing       
+  218.477     40.147    223.009     52.402  F135PW100 TVC  
+  218.477     40.147    223.009     52.402  F135PW100 TVC  
+  138.124     37.818     22.533      7.889  Canard         
+  138.124     37.818     22.533      7.889  Canard         
+  548.832     91.050     91.476     19.406  StackGeom      
+-------------------------------------------------
+ 4455.533   2286.988   2538.378   1651.290  Totals         
+
+Tag_Theo_Area   Tag_Wet_Area    Tag_Name
+      325.054        179.348    Ducts_S_Surf0  
+      325.054        179.348    Ducts_S_Surf1  
+      925.260        497.416    FuselageGeom_S_Surf0
+      558.830        341.714    MainWing_S_Surf0
+      558.830        341.714    MainWing_S_Surf1
+      218.477         40.147    F135PW100 TVC_S_Surf0
+      218.477         40.147    F135PW100 TVC_S_Surf1
+      128.585         28.279    Canard_S_Surf0 
+      128.585         28.279    Canard_S_Surf1 
+      548.832         91.050    StackGeom_S_Surf0
+       32.424         32.424    FuselageGeom_S_Surf0,SS_ELLIP_0
+       36.766         36.766    MainWing_S_Surf0,OutboardFlap
+       94.856         94.856    MainWing_S_Surf0,Elevator line 0.34
+       36.763         36.763    MainWing_S_Surf0,InboardFlap
+       47.548         47.548    MainWing_S_Surf0,Slats
+       36.766         36.766    MainWing_S_Surf1,OutboardFlap
+       94.856         94.856    MainWing_S_Surf1,Elevator line 0.34
+       36.763         36.763    MainWing_S_Surf1,InboardFlap
+       47.548         47.548    MainWing_S_Surf1,Slats
+        9.539          9.539    Canard_S_Surf0,SS_CONT_0
+        9.539          9.539    Canard_S_Surf1,SS_CONT_0
+       18.088         18.088    MainWing_S_Surf0,Elevons,Elevator line 0.34
+       18.088         18.088    MainWing_S_Surf1,Elevons,Elevator line 0.34
+
+ SS_Theo_Area    SS_Wet_Area    SS_Name
+       32.424         32.424    FuselageGeom,SS_ELLIP_0
+       73.532         73.532    MainWing,OutboardFlap
+      225.888        225.888    MainWing,Elevator line 0.34
+       73.526         73.526    MainWing,InboardFlap
+       95.097         95.097    MainWing,Slats 
+       19.078         19.078    Canard,SS_CONT_0
+       36.176         36.176    MainWing,Elevons

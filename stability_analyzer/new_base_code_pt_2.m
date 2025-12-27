@@ -1,5 +1,4 @@
-% Stability Thing
-% Authors: Byrn Balangauan, Alex Burghardt
+% Conceptual Stability Analysis 
 
 % Description: 
 % This software takes the geometric parameters of the various

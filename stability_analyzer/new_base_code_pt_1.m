@@ -1,5 +1,4 @@
-% Preliminary Stability Analysis 
-% Authors: Byrn Balangauan, Alex Burghardt
+% Conceptual Stability Analysis 
 
 % Description: This software takes the geometric parameters of the various
 % flying surfaces of the airplane in order to build up the stability analysis
@@ -8,7 +7,7 @@
 % It currently only works for normalized tails, meaning that it will not
 % work for a plane that uses a V-tail. This is being developed further.
 
-folder = fileparts(which("new_base_code_pt_2.m"));
+folder = fileparts(which("new_base_code_pt_1.m"));
 addpath(genpath(folder));
 
 clear

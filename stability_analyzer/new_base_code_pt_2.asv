@@ -47,6 +47,10 @@ C_T_xu = -0.07;
 % Steady state thrust coefficient (usually equal to steady state drag)
 C_T_x1 = 0.030;
 
+% Variation of airplane X-axis thrust coefficient with nozzle vectoring
+
+% Variation of airplane Z-axis thrust coefficient with nozzle vectoring
+
 %% Drag Coefficients
 
 % Variation of airplane drag coefficient with dimensionless speed
@@ -347,8 +351,8 @@ B_Late(4,2) = 0;
 
 %% Directional Dynamics Analysis
 
-%% Longitudinal Dynamics
-[V_Late,G_Long] = eig(A_Long);
+% Longitudinal Dynamics
+[V_Long,G_Long] = eig(A_Long);
 eig_Long = diag(G_Long); % Gives Poles
 tau_Long = -1 * 1 ./ (real(eig_Long)); % Time constants
 w_n_Long = abs(eig_Long); % Natural frequencies
@@ -359,24 +363,30 @@ zeta_Long = -1 * real(eig_Long) ./ w_n_Long; % Damping ratios
 zeta_sh = zeta_Long(idx_sh);
 tau_sh  = tau_Long(idx_sh);
 
-% Phugoid Bowing Calculations
+% Phugoid Motion Calculations
 [w_n_ph, idx_ph]  = min(w_n_Long);
 zeta_ph = zeta_Long(idx_ph);
 tau_ph  = tau_Long(idx_ph);
 
-%% Longitudinal Dynamics
+% Lateral Dynamics
 [V_Late,G_Late] = eig(A_Late);
 eig_Late = diag(G_Late); % Gives Poles
-tau_Late = -1 * 1 ./ (real(eig_Late)); % Time constants
-w_n_Late = abs(eig_Long); % Natural frequencies
+
+tau_Late = -1 ./ (real(eig_Late)); % Time constants
+w_n_Late = abs(eig_Late); % Natural frequencies
 zeta_Late = -1 * real(eig_Late) ./ w_n_Late; % Damping ratios
 
-% Short Period Calculations
-[w_n_sp, idx_sp]  = max(w_n_Late);
+% Spiral Motion Calculations
+[tau_sp, idx_sp]  = max(tau_Late);
 zeta_sp = zeta_Late(idx_sp);
-tau_sp  = tau_Long(idx_sp);
+w_n_sp  = w_n_Late(idx_sp);
 
-% Phugoid Bowing Calculations
-[w_n_ph, idx_ph]  = min(w_n_Late);
-zeta_ph = zeta_Late(idx_ph);
-tau_ph  = tau_Long(idx_ph);
+% Rolling Motion Calculations
+[tau_ro, idx_ro]  = min(tau_Late);
+zeta_ro = zeta_Late(idx_ro);
+w_n_ro  = w_n_Late(idx_ro);
+
+% Dutch Roll Calculations
+[zeta_dr, idx_dr]  = min(zeta_Late);
+tau_dr = tau_Late(idx_dr);
+w_n_dr  = w_n_Late(idx_dr);

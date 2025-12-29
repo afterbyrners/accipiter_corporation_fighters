@@ -347,7 +347,7 @@ B_Late(4,2) = 0;
 
 %% Directional Dynamics Analysis
 
-%% Longitudinal Dynamics
+% Longitudinal Dynamics
 [V_Long,G_Long] = eig(A_Long);
 eig_Long = diag(G_Long); % Gives Poles
 tau_Long = -1 * 1 ./ (real(eig_Long)); % Time constants
@@ -364,7 +364,7 @@ tau_sh  = tau_Long(idx_sh);
 zeta_ph = zeta_Long(idx_ph);
 tau_ph  = tau_Long(idx_ph);
 
-%% Longitudinal Dynamics
+% Lateral Dynamics
 [V_Late,G_Late] = eig(A_Late);
 eig_Late = diag(G_Late); % Gives Poles
 

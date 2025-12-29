@@ -1,0 +1,86 @@
+%%% FORCE BUILD-UP
+
+% Description: This program uses the geometric and aerodynamic parameters
+% of the subject aircraft in order to compute the necessary forces and
+% moments needed to properly analyze the aircraft.
+
+% Afterwards, these stability derivatives can then be implemented in a
+% separate but accompanying program to assemble a perturbation apprehensive
+% state-space model of the aircraft.
+
+% It currently only works for normalized tails, meaning that it will not
+% work for a plane that uses a V-tail. This is being developed further.
+
+folder = fileparts(which("new_base_code_pt_1.m"));
+addpath(genpath(folder));
+
+clear
+
+%% FUNDAMENTAL AXIS NOTES (For a later README)
+
+% This presumes the Stability Axis System (SAS) of the aircraft, which is
+% fundamentally a modification of the Body Axis System (BAS) of the normal
+% aircraft with a rotation of the X and Z axes by the trim angle of attack.
+
+% In the BAS:
+% The X-axis is +X toward the nose & -X toward the aft of the plane
+% The Y-axis is +Y toward the right & -Y toward the left of the plane
+% The Z-axis is +Z toward the bottom & -Z toward the top of the plane
+
+% In SAS, the sideslip is still considered, but the perturbations in the Y
+% axis remain so small that only the sideslip is measured and the velocity
+% projected onto the stability axis Xs, U1s, is presumed to be the total
+% airspeed of the vehicle, VP1. Also, the velocity measured on the Zs axis
+% is considered to be so small, that it is not to be measured. 
+
+%% NOTATIONS
+
+% X  : Axis running lengthwise with the plane, +X at nose, -X at aft
+% Y  : Axis running spanwise with the plane, +Y at right, -Y at left
+% Z  : Axis running depthwise with the plane, +Z at bottom, -Z at top
+
+% θ  : Pitch angle/attitude of the plane, called "theta" usually
+% Φ  : Bank/roll angle/attitude of the plane, called "phi" usually
+% Ψ  : Heading angle/attitude of the plane, called "psi" usually
+% α  : Angle of attack of the plane, called "alpha" or "AOA"
+% β  : Sideslip angle of the plane, called "beta"
+
+% VP : True aircraft air speed 
+% U  : Component of VP along X
+% V  : Component of VP along Y
+% W  : Component of VP along Z
+
+% FX : Force component about the X axis
+% FY : Force component about the Y axis
+% FZ : Force component about the Z axis
+
+% L  : Rolling moment made about the X axis
+% M  : Pitching moment made about the Y axis
+% N  : Yawing moment made about the Z axis
+
+% P  : Roll rate
+% Q  : Pitch rate
+% R  : Yaw rate
+
+% D : Coefficient of drag
+% L : Coefficient of lift, will be confusing with L
+
+% iw : Incidence angle of wing planform
+% ih : Incidence angle of horizontal flight surface
+% iv : Incidence angle of vertical flight surface
+
+% δe : Deflection of elevators 
+% δa : Deflection of ailerons
+% δr : Deflection of rudders
+% δf : Deflection of flaps
+% δv : Deflection of ruddervators
+% δt : Deflection of thrusters
+
+%% Plane Characteristics
+...
+
+%% Calculate X-Axis Forces
+
+
+%% Calculate Y-Axis Forces
+%% Calculate Z-Axis Forces

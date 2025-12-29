@@ -225,3 +225,6 @@ cnda = 0;  % assumed so (low dihedral = min effect)
 
 % Calculate Coefficient of Yawing Moment change caused by rudder
 cndr = -cYdr * (xacVert - xbarCG * mgc_wing) / b_wing;
+
+% Calculate Coefficient of Yawing Moment caused by change in roll rate
+cndpv =  

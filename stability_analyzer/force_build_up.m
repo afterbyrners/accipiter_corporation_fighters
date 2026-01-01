@@ -50,20 +50,21 @@ clear
 % V  : Component of VP along Y
 % W  : Component of VP along Z
 
-% FX : Force component about the X axis
-% FY : Force component about the Y axis
-% FZ : Force component about the Z axis
+% FaX: Aerodynamic force component about the X axis
+% FaY: Aerodynamic force component about the Y axis
+% FaZ: Aerodynamic force component about the Z axis
 
-% L  : Rolling moment made about the X axis
-% M  : Pitching moment made about the Y axis
-% N  : Yawing moment made about the Z axis
+% l  : Rolling moment made about the X axis
+% m  : Pitching moment made about the Y axis
+% n  : Yawing moment made about the Z axis
 
 % P  : Roll rate
 % Q  : Pitch rate
 % R  : Yaw rate
 
 % D : Coefficient of drag
-% L : Coefficient of lift, will be confusing with L
+% L : Coefficient of lift
+% T : Coefficient of thrust (not an aerodynamic force)
 
 % iw : Incidence angle of wing planform
 % ih : Incidence angle of horizontal flight surface
@@ -74,17 +75,74 @@ clear
 % δr : Deflection of rudders
 % δf : Deflection of flaps
 % δv : Deflection of ruddervators
-% δt : Deflection of thrusters
+% δn : Deflection of thruster nozzles
 
-%% Plane Characteristics
-...
+%% Plane & Flight Characteristics
 
-%% Calculate X-Axis Forces
+% Define Altitude
+h_ft = 30000; % ft
+h_m = h_ft * 0.3048; % Convert altitude from feet to meters
 
-% Calculate Drag Build Up
+% Get ISA properties (SI units)
+[T_K, a_mps, P_Pa, rho_kgm3] = atmosisa(h_m);
 
-% Calculate Thrust Build Up
-C_T 
+% Convert to imperial units
+T_R = T_K * 9/5;               % Kelvin → Rankine
+a_fps = a_mps * 3.28084;       % m/s → ft/s
+P_psf = P_Pa * 0.0208854342;   % Pa → lb/ft²
+rho_sl = rho_kgm3 * 0.062428;  % kg/m³ → slugs/ft³
 
-%% Calculate Y-Axis Forces
-%% Calculate Z-Axis Forces
+M_1 = 0.459; % Mach number
+
+%u1 = c * M; % trim velocity
+u_1 = 456;
+
+%q1 = 0.5 * rho * u1 ^ 2; % trim dynamic pressure
+q_1 = 92.7;
+
+S_w = 182; % ft^2
+
+% Maximum Thrust Vector Angle in both directions
+dt_max_deg = 20; % deg
+dt_max_rad = deg2rad(dt_max_deg); % rad
+
+% It is worth noting that small angle approximation can be used such that
+% Fz = Tsin(dt_max) = T*dt_max, since sin(dt_max) rough equals dt_max if
+% dt_max is around less than 30 deg. In this sense, Fx = Tcos(dt_max) = T
+% since cos(dt_max) is roughly about 0.94. % Linearizations can be made.
+
+%% D Forces (Drag)
+
+% Calculate Trim Drag Coefficient
+C_D_x_1 = 0.03; % This value makes sense for an f-22. 
+
+% Calculate Variation of Drag Coefficient with Angle of Attack
+C_D_a = 0.07;
+
+%% T Forces (Thrust)
+
+% Calculate Trim Thrust Coefficient
+C_T_x_1 = C_D_x_1;
+
+% Calculate Variation of Thrust Coefficient with Forward Speed Perturbation
+C_T_x_u = M_1 / (q_1 * S_w) - (2 * C_T_x_1); % Roskam Equation 3.206
+
+% Calculate Variation of X Thrust with Nozzle Deflection
+C_T_x_d_n = C_T_x_1 * (cos(dt_max_rad)) / dt_max_rad;
+
+% Calculate Variation of Z Thrust with Nozzle Deflection
+C_T_z_d_n = C_T_x_1 * (sin(dt_max_rad)) / dt_max_rad;
+
+%% L Forces (Lift)
+
+%% X Forces (Drag & Thrust)
+
+%% Calculate Y Forces (Sideforces)
+
+%% Calculate Z Forces (Lift)
+
+%% Calculate L Moments (Rolling)
+
+%% Calculate M Moments (Pitching)
+
+%% Calculate N Moments (Yawing)

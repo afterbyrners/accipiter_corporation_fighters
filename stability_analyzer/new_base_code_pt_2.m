@@ -15,7 +15,7 @@ addpath(genpath(folder));
 clear
 
 % Further Author Notes:
-% 
+% Currently for a Roskam plane
 
 %% Flight Conditions
 h = 30000; % altitude, ft
@@ -81,75 +81,75 @@ C_L_q = 4.1;
 %% Pitching Moment Coefficients
 
 % Variation of pitching moment coefficient with dimensionless speed
-C_M_u = 0;
+C_m_u = 0;
 
 % Steady state pitching moment coefficient
-C_M_1 = 0;
+C_m_1 = 0;
 
 % Variation of pitching moment coefficient with angle of attack
-CMa = -0.7;
+C_m_a = -0.7;
 
 % Variation of pitching moment coefficient with dimensioness pitch rate
-CMq = -14.9;
+C_m_q = -14.9;
 
 % Variation of pitching moment coefficient with elevator deflection
-CMde = -1.12;
+C_m_de = -1.12;
 
 %% Side Force Coefficients
 
 % Variation of side force coefficient with sideslip angle
-CYb = -0.346;
+C_Y_b = -0.346;
 
 % Variation of side force coefficient with dimensionless rate of change of
 % roll rate
-CYp = -0.0827;
+C_Y_p = -0.0827;
 
 % Yariation of side force coefficient with dimensionless rate of change of
 % yaw rate
-CYr = 0.3;
+C_Y_r = 0.3;
 
 % Variation of side force coefficient with rudder deflection
-CYdr = 0.2;
+C_Y_dr = 0.2;
 
 % Variation of side force coefficient with aileron deflection
-CYda = 0;
+C_Y_da = 0;
 
 %% Rolling Moment Coefficients
 
 % Variation of rolling moment coefficient with sideslip angle
-Clb = -0.0944;
+C_l_b = -0.0944;
 
 % Variation of rolling moment coefficient with rate of change of roll rate
-Clp = -0.442;
+C_l_p = -0.442;
 
 % Variation of rolling moment coefficient with rate of change of yaw rate
-Clr = 0.0926;
+C_l_r = 0.0926;
 
 % Variation of rolling moment coefficient with aileron deflection
-Clda = 0.1810;
+C_l_da = 0.1810;
 
 % Variation of rolling moment coefficient with rudder deflection
-Cldr = 0.0150;
+C_l_dr = 0.0150;
 
 %% Yawing Moment Coefficients
 
 % Variation of yawing moment coefficient with sideslip angle
-CNb = 0.1106;
+C_n_b = 0.1106;
 
 % Variation of yawing moment coefficient due to thrust with sideslip angle
-CNTb = 0;
+C_n_T_b = 0;
 
 % Variation of yawing moment coefficient due to rate of change of roll rate
-CNp = -0.0243;
+C_n_p = -0.0243;
 
 % Variation of yawing moment coefficient due to rate of change of yaw rate
-CNr = -0.1390;
+C_n_r = -0.1390;
 
 % Variation of yawing moment coefficient due to aileron deflection
-CNda = -0.0254;
+C_n_da = -0.0254;
 
 % Variation of yawing moment coefficient due to rudder deflection
-CNdr = -0.0365;
+C_n_dr = -0.0365;
 
 %% Important Inertia Values
 Ixx = 7985;
@@ -187,61 +187,61 @@ Z_de = -(q1 * S_w) / (m) * (C_L_de);
 %% State Space Coefficients: M Components (Pitching Moment About Y)
 
 % Variation of pitching moment due to changes in forward airspeed
-Mu  = (q1 * S_w * mgc) / (Iyy * u1) * (C_M_u + 2 * C_M_1);
+Mu  = (q1 * S_w * mgc) / (Iyy * u1) * (C_m_u + 2 * C_m_1);
 
 % Variation of pitching moment due to changes in angle of attack
-Ma  = (q1 * S_w * mgc) / (Iyy) * (CMa);
+Ma  = (q1 * S_w * mgc) / (Iyy) * (C_m_a);
 
 % Variation of pitching moment due to changes in pitch rate
-Mq  = (q1 * S_w * mgc^2) / (2 * Iyy * u1) * (CMq);
+Mq  = (q1 * S_w * mgc^2) / (2 * Iyy * u1) * (C_m_q);
 
 % Variation of pitching moment due to changes in pitch rate
-Mde  = (q1 * S_w * mgc) / (Iyy) * (CMde);
+Mde  = (q1 * S_w * mgc) / (Iyy) * (C_m_de);
 
 %% State Space Coefficients: Y Components (Right-Left)
 
 % Variation of Y position with sideslip angle
-Yb = (q1 * S_w) / (m) * (CYb);
+Yb = (q1 * S_w) / (m) * (C_Y_b);
 
 % Variation of Y position with roll rate
-Yp = (q1 * S_w) / (2 * m * u1) * (CYp);
+Yp = (q1 * S_w) / (2 * m * u1) * (C_Y_p);
 
 % Variation of Y position with rudder deflection
-Ydr = (q1 * S_w) / (m) * (CYdr);
+Ydr = (q1 * S_w) / (m) * (C_Y_dr);
 
 %% State Space Coefficients: L Components (Rolling Moment About X)
 
 % Variation of rolling moment with sideslip angle
-Lb  = (q1 * S_w * b) / (Ixx) * (Clb);
+Lb  = (q1 * S_w * b) / (Ixx) * (C_l_b);
 
 % Variation of rolling moment with roll rate
-Lp  = (q1 * S_w * b^2) / (2 * Ixx * u1) * (Clp);
+Lp  = (q1 * S_w * b^2) / (2 * Ixx * u1) * (C_l_p);
 
 % Variation of rolling moment with yaw rate
-Lr  = (q1 * S_w * b^2) / (2 * Ixx * u1) * (Clr);
+Lr  = (q1 * S_w * b^2) / (2 * Ixx * u1) * (C_l_r);
 
 % Variation of rolling moment with aileron deflection
-Lda = (q1 * S_w * b) / (Ixx) * (Clda);
+Lda = (q1 * S_w * b) / (Ixx) * (C_l_da);
 
 % Variation of rolling moment with rudder deflection
-Ldr = (q1 * S_w * b) / (Ixx) * (Cldr);
+Ldr = (q1 * S_w * b) / (Ixx) * (C_l_dr);
 
 %% State Space Coefficients: N Components (Yawing Moment About Z)
 
 % Variation of yawing moment with sideslip angle
-Nb  = (q1 * S_w * b) / (Izz) * (CNb);
+Nb  = (q1 * S_w * b) / (Izz) * (C_n_b);
 
 % Variation of yawing moment with roll rate
-Np  = (q1 * S_w * b^2) / (2 * Izz * u1) * (CNp);
+Np  = (q1 * S_w * b^2) / (2 * Izz * u1) * (C_n_p);
 
 % Variation of yawing moment with yaw rate
-Nr  = (q1 * S_w * b^2) / (2 * Izz * u1) * (CNr);
+Nr  = (q1 * S_w * b^2) / (2 * Izz * u1) * (C_n_r);
 
 % Variation of yawing moment with aileron deflection
-Nda = (q1 * S_w * b) / (Izz) * (CNda);
+Nda = (q1 * S_w * b) / (Izz) * (C_n_da);
 
 % Variation of yawing moment with rudder deflection
-Ndr = (q1 * S_w * b) / (Izz) * (CNdr);
+Ndr = (q1 * S_w * b) / (Izz) * (C_n_dr);
 
 %% Longitudinal State Space Assembly
 

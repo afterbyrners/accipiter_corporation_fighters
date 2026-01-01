@@ -18,7 +18,7 @@
 % de_da    = wash gradient
 
 
-function de_dalpha = AppendixC(AR,LE_sweep,lambda,M,r,m)
+function de_dalpha = TransonicAppendixC(AR,LE_sweep,lambda,M,r,m)
 
     KA = (1/AR)-(1/(1+AR^1.7));
 
@@ -30,6 +30,7 @@ function de_dalpha = AppendixC(AR,LE_sweep,lambda,M,r,m)
 
     de_o_alpha_0 = 4.44*(KA*K_lambda*Kmr*sqrt(cos(Sweep_25)))^1.19;
 
-    de_dalpha = de_o_alpha_0/sqrt(1-M^2);
+    de_dalpha = de_o_alpha_0 * (TransonicAppendixB(AR,LE_sweep,lambda,M) ...
+        / TransonicAppendixB(AR,LE_sweep,lambda,0));
 
 end

@@ -1,10 +1,13 @@
-% Appendix C Function
+% Transonic Appendix C Function
 
 % The "Appendix C" function calculates the wash gradient based on both the
 % experienced Mach number of the aircraft, and the characteristics of the
 % reference wing. It accounts for both up and down wash, and it is mostly
 % used for the horizontal tail, unless there is an exotic tail
 % configuration being used such as a V-tail or a canard.
+
+% The transonic variation of this replaces the original Prandtl-Glauert
+% term with a Karman-Tsien term.
 
 %% INPUTS & OUTPUTS
 

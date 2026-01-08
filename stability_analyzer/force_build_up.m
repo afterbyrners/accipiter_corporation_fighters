@@ -11,7 +11,7 @@
 % It currently only works for normalized tails, meaning that it will not
 % work for a plane that uses a V-tail. This is being developed further.
 
-folder = fileparts(which("new_base_code_pt_1.m"));
+folder = fileparts(which("force_build_up.m"));
 addpath(genpath(folder));
 
 clear
@@ -93,7 +93,9 @@ P_psf = P_Pa * 0.0208854342;   % Pa → lb/ft²
 rho_sl = rho_kgm3 * 0.062428;  % kg/m³ → slugs/ft³
 
 %% Flight Conditions
-M = 0.85;
+M_1 = 0.85; % Flight Mach Number
+u_1 = a_fps; % Flight forward velocity
+q_1 = 0.5 * rho_sl * a_fps^2; % Dynamic Pressure
 eta_h = 0.95; % Horizontal Tail Dynamic Pressure Ratio
 eta_v = 0.95; % Vertical Tail Dynamic Pressure Ratio
 
@@ -105,9 +107,18 @@ C_m_ac  = -0.040; % Pitching Moment at Zero-Lift Coefficient
 %% Key Parameters Related to General Vehicle
 X_cg = 22; % Actual Location of CG, ft
 
+% Maximum Thrust Vector Angle in both directions
+dt_max_deg = 20; % deg
+dt_max_rad = deg2rad(dt_max_deg); % rad
+
+% It is worth noting that small angle approximation can be used such that
+% Fz = Tsin(dt_max) = T*dt_max, since sin(dt_max) rough equals dt_max if
+% dt_max is around less than 30 deg. In this sense, Fx = Tcos(dt_max) = T
+% since cos(dt_max) is roughly about 0.94. % Linearizations can be made.
+
 %% Wing Design Parameters
 S_w = 656; % Wing Reference Area, ft^2
-AR_w = 2; % Wing Aspect Ratio, N/A
+AR_w = 2.5; % Wing Aspect Ratio, N/A
 sweep_w = 40; % Wing Leading Edge Sweep, deg
 taper_w = 0.08; % Wing Taper Ratio, 
 cf_c_w = 0.5; % Wing Chord-Flap Ratio
@@ -137,7 +148,7 @@ y_mgc_w = (b_w / 6) * (1 + 2 * taper_w) / (1 + taper_w); % ft
 x_mgc_w = y_mgc_w * tan(sweep_w); % ft
 
 % Calculate Variation of Panel Lift Coefficient with Angle of Attack (AOA)
-C_L_a_w = TransonicAppendixB(AR_w,sweep_w,taper_w,M); % 1/rad
+C_L_a_w = TransonicAppendixB(AR_w,sweep_w,taper_w,M_1); % 1/rad
 
 % Calculate Effectiveness of Wing Control Surfaces (Ailerons)
 tau_w = AppendixD(cf_c_w); % N/A
@@ -149,12 +160,12 @@ x_ac_w = ((x_w + x_mgc_w + 0.25 * mgc_w) - (x_w + x_mgc_w)) / mgc_w; % N/A
 x_cg = ((X_cg) - (x_w + x_mgc_w)) / mgc_w; % N/A
 
 %% Horizontal Tail (H.T.) Design Parameters
-S_h = 77.5123; % H.T. Reference Area, ft^2
-AR_h = 2.1803; % H.T. Aspect Ratio, N/A
+S_h = 85.8; % H.T. Reference Area, ft^2
+AR_h = 1.96970; % H.T. Aspect Ratio, N/A
 sweep_h = 39; % H.T. Leading Edge Sweep, deg
-taper_h = 0.08409; % H.T. Taper Ratio, 
+taper_h = 0.1; % H.T. Taper Ratio, 
 cf_c_h = 1.0; % H.T. Chord-Flap Ratio
-x_h = 39; % Absolute H.T. Front Point X Location
+x_h = 38; % Absolute H.T. Front Point X Location
 y_h = 0; % Absolute H.T. Front Point Y Position
 z_h = 1; % Absolute H.T. Front Point Z Position
 
@@ -181,7 +192,7 @@ y_mgc_h = (b_h / 6) * (1 + 2 * taper_h) / (1 + taper_h); % ft
 x_mgc_h = y_mgc_h * tan(sweep_h); % ft
 
 % Calculate Variation of Panel Lift Coefficient with Angle of Attack (AOA)
-C_L_a_h = AppendixB(AR_h,sweep_h,taper_h,M); % 1/rad
+C_L_a_h = AppendixB(AR_h,sweep_h,taper_h,M_1); % 1/rad
 
 % Calculate Effectiveness of H.T. Control Surfaces (Elevator)
 tau_h = AppendixD(cf_c_h); % N/A
@@ -202,17 +213,63 @@ z_w_h = (z_h + y_mgc_h * sqrt(2)) - z_w;
 m_h = z_w_h / (0.5 * b_w);
 
 % Calculate downwash gradient for horizontal tail equivalent
-dw_h = TransonicAppendixC(AR_w,sweep_w,taper_w,M,r_h,m_h);
+dw_h = TransonicAppendixC(AR_w,sweep_w,taper_w,M_1,r_h,m_h);
 
-% Maximum Thrust Vector Angle in both directions
-dt_max_deg = 20; % deg
-dt_max_rad = deg2rad(dt_max_deg); % rad
+%% Vertical Tail (V.T.) Design Parameters
+S_v = 85.8; % V.T. Reference Area, ft^2
+AR_v = 1.96970; % V.T. Aspect Ratio, N/A
+sweep_v = 39; % V.T. Leading Edge Sweep, deg
+taper_v = 0.1; % V.T. Taper Ratio, 
+cf_c_v = 1.0; % V.T. Chord-Flap Ratio
+x_v = 38; % Absolute V.T. Front Point X Location
+y_v = 0; % Absolute V.T. Front Point Y Position
+z_v = 1; % Absolute V.T. Front Point Z Position
 
-% It is worth noting that small angle approximation can be used such that
-% Fz = Tsin(dt_max) = T*dt_max, since sin(dt_max) rough equals dt_max if
-% dt_max is around less than 30 deg. In this sense, Fx = Tcos(dt_max) = T
-% since cos(dt_max) is roughly about 0.94. % Linearizations can be made.
+% Convert leading edge sweep to radians
+sweep_v = deg2rad(sweep_v); % rad
 
+% Calculate Wing Span
+b_v = sqrt(S_v * AR_v); % ft
+
+% Calculate Root Chord
+c_r_v = (2 * S_v) / (b_v * (1 + taper_v)); % ft
+
+% Calculate Tip Chord
+c_t_v = c_r_v * taper_v; % ft
+
+% Calculate Mean Geometric Chord (MGC)
+mgc_v = 2/3 * c_r_v * (1 + taper_v + taper_v ^ 2) / ... 
+    (1 + taper_v); % ft
+
+% Calculate Y-position of MGC
+y_mgc_v = (b_v / 6) * (1 + 2 * taper_v) / (1 + taper_v); % ft
+
+% Calculate X-position of MGC
+x_mgc_v = y_mgc_v * tan(sweep_v); % ft
+
+% Calculate Variation of Panel Lift Coefficient with Angle of Attack (AOA)
+C_L_a_v = AppendixB(AR_v,sweep_v,taper_v,M_1); % 1/rad
+
+% Calculate Effectiveness of V.T. Control Surfaces (Elevator)
+tau_v = AppendixD(cf_c_v); % N/A
+
+% Calculate Non-Dimensional V.T. Aerodynamic Center Position X-Wise
+x_ac_v = ((x_v + x_mgc_v + 0.25 * mgc_v) - (x_w + x_mgc_w)) / mgc_w; % N/A
+
+% Calculate X Distance Between ACs of V.T. and Wing
+x_w_v = x_v - (c_r_w / 4) + (c_r_v / 4);
+
+% Calculate Non-Dimensional X Distance between V.T. and Wing
+r_v = x_w_v / (0.5 * b_w);
+
+% Calculate Z Distance Between ACs of V.T. and Wing 
+z_w_v = (z_v + y_mgc_v * sqrt(2)) - z_w;
+
+% Calculate Non-Dimensional Z Distance between V.T. and Wing
+m_v = z_w_v / (0.5 * b_w);
+
+% Calculate downwash gradient for V.T. equivalent
+dw_v = TransonicAppendixC(AR_w,sweep_w,taper_w,M_1,r_v,m_v);
 %% D Forces (Drag)
 
 % Calculate Trim Drag Coefficient
@@ -226,7 +283,7 @@ C_D_a = 0.07;
 % Calculate Trim Thrust Coefficient
 C_T_x_1 = C_D_x_1;
 
-% Calculate Variation of Thrust Coefficient with Forward Speed Perturbation
+% Calculate Variation of Thrust Coefficient with Fwd V Perturbation
 C_T_x_u = M_1 / (q_1 * S_w) - (2 * C_T_x_1); % Roskam Equation 3.206
 
 % Calculate Variation of X Thrust with Nozzle Deflection
@@ -253,9 +310,48 @@ C_L_de = C_L_ih * tau_h;  % 1/rad
 
 %% Calculate Y Forces (Sideforces)
 
-%% Calculate Z Forces (Lift)
+% TODO
+
+% % Calculate Level Flight Coefficient of Side Force
+% cY0 = 0;  % Given/assumed
+% 
+% % Calculate Coefficient of Side Force based on Beta
+% cYBv = -(s_vert / s_wing) * cLAlphaVert * AppendixE(s_vert, s_wing, z_wing, d, AR_wing, sweep_wing, taper_wing);
+% 
+% cYBw = -0.0001 * abs(phi_wing) * 180 / pi;  % rad^-1, basically zero
+% cYBwv = cYBv +cYBw;
+% cYBf = 0.3 * cYBw;
+% 
+% cYB = cYBwv + cYBf;
+% 
+% % Calculate change in Coefficient of Side Force caused by aileron incidence
+% cYda = 0;  % we can assume so due to ailerons not affecting that DOF
+% 
+% % Calculate change in Coefficient of Side Force caused by rudder incidence
+% cYdr = etaV * (s_vert / s_wing) * cLAlphaVert * tauVert;
+
+%% Calculate Z Forces (Lift(?))
 
 %% Calculate l Moments (Rolling)
+
+% TODO
+
+% % Calculate Level Flight Coefficient of Rolling Moment
+% cl0 = 0;  % Assumed
+% 
+% % Calculate Coefficient of Rolling Moment change based on beta
+% clBv = cYBv * (z_mgc_vert / b_wing);
+% clBw = -2 * cLAlphaWing * phi_wing * (y_mgc_wing / b_wing);
+% clB  = clBv + clBw;
+% 
+% % Calculate Coefficient of Rolling Moment change caused by ailerons
+% aileron_end = 51;
+% aileron_start = 35;
+% 
+% clda = AppendixG(cLAlphaWing,tauWing,cr_wing,s_wing,b_wing,taper_wing,aileron_start,aileron_end);
+% 
+% % Calculate Coefficient of Rolling Moment change caused by rudder
+% cldr = cYdr * (z_mgc_vert / b_wing);
 
 %% Calculate m Moments (Pitching)
 
@@ -263,8 +359,7 @@ C_L_de = C_L_ih * tau_h;  % 1/rad
 C_m_0 = C_m_ac + C_L_0 * (x_cg - x_ac_w);  % N/A
 
 % Calculate Coefficient of Moment caused by General Plane
-C_m_a = C_L_a_w * (x_cg - x_ac_w) - ...
-        C_L_a_h * eta_h * (S_h / S_w) * ...
+C_m_a = C_L_a_w * (x_cg - x_ac_w) - C_L_a_h * eta_h * (S_h / S_w) * ...
         (1 - dw_h) * (x_ac_h - x_cg); % 1/rad
 
 % Calculate Coefficient of Moment caused by Horizontal Stabilizer Incidence
@@ -274,6 +369,21 @@ C_m_ih = -C_L_a_h * eta_h * (S_h / S_w) * (x_ac_h - x_cg); % 1/rad
 C_m_de = -C_L_a_h * eta_h * (S_h / S_w) * tau_h * (x_ac_h - x_cg); % 1/rad
 
 %% Calculate n Moments (Yawing)
+
+% % Calculate Level Flight Coefficient of Yawing Moment
+% cn0 = 0;  % assumed
+% 
+% % Calculate Coefficient of Yawing Moment change caused by beta
+% cnB = -cYBv * (xacVert - xbarCG * mgc_wing) / b_wing;
+% 
+% % Calculate Coefficient of Yawing Moment change caused by ailerons
+% cnda = 0;  % assumed so (low dihedral = min effect)
+% 
+% % Calculate Coefficient of Yawing Moment change caused by rudder
+% cndr = -cYdr * (xacVert - xbarCG * mgc_wing) / b_wing;
+% % 
+% % % Calculate Coefficient of Yawing Moment caused by change in roll rate
+% % cndpv =  CHECK IF NECESSARY
 
 %% Calculate Flying Qualities
 

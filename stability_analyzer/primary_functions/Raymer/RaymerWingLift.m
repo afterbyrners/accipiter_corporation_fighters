@@ -22,7 +22,7 @@
 
 % CL_a     = coefficient of lift derivative to AoA for a lifting surface
 
-function CL_a = RaymerSubLift(AR,sweep_LE,lambda,M) % CL_alpha function
+function [CL_a,Mdd,Mss] = RaymerWingLift(AR,sweep_LE,lambda,M) % CL_alpha function
 
    % Initialize, this should change later
    sweep_LE = deg2rad(sweep_LE);
@@ -36,6 +36,7 @@ function CL_a = RaymerSubLift(AR,sweep_LE,lambda,M) % CL_alpha function
    Cl = 0.277478; 
    % (based on CL found from wing loading versus dynamic pressure at trim)
    Mdd = K - tc - (0.1 * Cl) ;
+   Mss = 1/cos(sweep_LE);
    
    % Subsonic Curve Section
    if M < Mdd
@@ -49,29 +50,8 @@ function CL_a = RaymerSubLift(AR,sweep_LE,lambda,M) % CL_alpha function
 
    % Transonic Curve Section
    else 
-   
-
-
-   % Subsonic endpoint
-   M_1 = Mdd;
-   B_1 = sqrt(1 - M_1^2);
-   CL_a_sub = (2*pi*AR*Seff) / (2 + sqrt(4 + ((AR^2*B_1^2)/eta^2) * (1 + (tan(sweep_t_max)^2 / B_1^2))));
-
-   % Supersonic endpoint
-   M_2 = 1/cos(sweep_LE);
-   B_2 = sqrt(M_2^2 - 1);
-   CL_a_sup = 4/B_2 * (1 - (1 / (2 * AR * B_2)));
-
-   % Slender Wing M = 1 approximation
-   M_p = 1; 
-   CL_a_p = pi * AR / 2;
-
-
-   % Interpolate
-   M_fair  = [M_1, M_p, M_2];
-   CL_fair = [CL_a_sub, CL_a_p, CL_a_sup];
-   CL_a = interp1(M_fair, CL_fair, M, 'makima');
-   
+       CL_a = NaN;
+   % For now, removing since other faired curve methods are overestimating.
    end
 
 end
@@ -82,3 +62,18 @@ end
    % Cl_a = 0.110;
    % Cl_a = Cl_a / deg2rad(1);
    % eta = Cl_a / (2 * pi / B); May not be necessary
+
+   % % Subsonic endpoint
+   % M_1 = Mdd;
+   % B_1 = sqrt(1 - M_1^2);
+   % CL_a_sub = (2*pi*AR*Seff) / (2 + sqrt(4 + ((AR^2*B_1^2)/eta^2) * (1 + (tan(sweep_t_max)^2 / B_1^2))));
+   % 
+   % % Supersonic endpoint
+   % M_2 = 1/cos(sweep_LE);
+   % B_2 = sqrt(M_2^2 - 1);
+   % CL_a_sup = 4/B_2 * (1 - (1 / (2 * AR * B_2)));
+   % 
+   % % Interpolate
+   % M_fair  = [M_1, M_2];
+   % CL_fair = [CL_a_sub, CL_a_sup];
+   % CL_a = interp1(M_fair, CL_fair, M);

@@ -24,7 +24,7 @@ function de_dalpha = AppendixC(AR,LE_sweep,lambda,M,r,m)
 
     K_lambda = (10-3*(lambda))/7;
 
-    Kmr = (1-(m*0.5))/(r^.33);
+    Kmr = (1-abs(m*0.5))/(r^.33);
 
     Sweep_25 = atan(tan(LE_sweep)-(4*0.25*(1-lambda))/(AR*(1+lambda)));
 
@@ -33,3 +33,5 @@ function de_dalpha = AppendixC(AR,LE_sweep,lambda,M,r,m)
     de_dalpha = de_o_alpha_0/sqrt(1-M^2);
 
 end
+
+% Investigate the absolute value edit

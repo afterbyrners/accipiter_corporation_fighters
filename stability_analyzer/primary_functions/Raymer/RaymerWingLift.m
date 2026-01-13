@@ -24,34 +24,45 @@
 
 function [CL_a,Mdd,Mss] = RaymerWingLift(AR,sweep_LE,lambda,M) % CL_alpha function
 
-   % Initialize, this should change later
+   % Parameters for actual calculation
    sweep_LE = deg2rad(sweep_LE);
    Seff = 0.99; 
-   eta = 0.95;
    sweep_t_max = atan( tan(sweep_LE) - (4 * 0.4 * (1-lambda) ) / (AR * (1+lambda) ) );
 
+   Cl_a = 0.110; % From empirical data bank for supercritical airfoils
+   Cl_a = Cl_a / deg2rad(1); % Convert to rad-1
+
    % Korn's relation for drag divergence mach number
-   K = 0.95;
-   tc = 0.06;
-   Cl = 0.277478; 
+   K = 0.95; % Supercritical number
+   tc = 0.06; % Thickness-Chord ratio maximum
+   Clreq = 0.277478; % Based on cruise wing loading
+
    % (based on CL found from wing loading versus dynamic pressure at trim)
-   Mdd = K - tc - (0.1 * Cl) ;
+   Mdd = K - tc - (0.1 * Clreq) ;
    Mss = 1/cos(sweep_LE);
    
    % Subsonic Curve Section
    if M < Mdd
+
    B = sqrt(1 - M^2);
+   eta = (Cl_a / B) / (2 * pi / B);
+
    CL_a = (2 * pi * AR * Seff) / (2 + sqrt(4 + ((AR^2 * B^2) / eta^2) * (1 + (tan(sweep_t_max)^2 / B^2)))) ;
 
    % Supersonic Curve Section
-   elseif M > (1/cos(sweep_LE))
+   elseif M > Mss
+
    B = sqrt(M^2 - 1);
    CL_a = 4/B * (1 - (1 / (2 * AR * B)));
 
    % Transonic Curve Section
    else 
-       CL_a = NaN;
+
+   CL_a = NaN;
+
    % For now, removing since other faired curve methods are overestimating.
+   % Probably will reimplement when I figure out how to do it -Byrn
+   
    end
 
 end

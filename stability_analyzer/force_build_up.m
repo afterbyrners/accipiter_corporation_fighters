@@ -118,7 +118,7 @@ dt_max_rad = deg2rad(dt_max_deg); % rad
 
 %% Wing Design Parameters
 S_w = 656; % Wing Reference Area, ft^2
-AR_w = 2.5; % Wing Aspect Ratio, N/A
+AR_w = 4; % Wing Aspect Ratio, N/A
 sweep_w = 40; % Wing Leading Edge Sweep, deg
 taper_w = 0.08; % Wing Taper Ratio, 
 cf_c_w = 0.5; % Wing Chord-Flap Ratio
@@ -148,7 +148,7 @@ y_mgc_w = (b_w / 6) * (1 + 2 * taper_w) / (1 + taper_w); % ft
 x_mgc_w = y_mgc_w * tan(sweep_w); % ft
 
 % Calculate Variation of Panel Lift Coefficient with Angle of Attack (AOA)
-C_L_a_w = TransonicAppendixB(AR_w,sweep_w,taper_w,M_1); % 1/rad
+C_L_a_w = AppendixB(AR_w,sweep_w,taper_w,M_1); % 1/rad
 
 % Calculate Effectiveness of Wing Control Surfaces (Ailerons)
 tau_w = AppendixD(cf_c_w); % N/A
@@ -213,7 +213,7 @@ z_w_h = (z_h + y_mgc_h * sqrt(2)) - z_w;
 m_h = z_w_h / (0.5 * b_w);
 
 % Calculate downwash gradient for horizontal tail equivalent
-dw_h = TransonicAppendixC(AR_w,sweep_w,taper_w,M_1,r_h,m_h);
+dw_h = AppendixC(AR_w,sweep_w,taper_w,M_1,r_h,m_h);
 
 %% Vertical Tail (V.T.) Design Parameters
 S_v = 85.8; % V.T. Reference Area, ft^2
@@ -269,7 +269,7 @@ z_w_v = (z_v + y_mgc_v * sqrt(2)) - z_w;
 m_v = z_w_v / (0.5 * b_w);
 
 % Calculate downwash gradient for V.T. equivalent
-dw_v = TransonicAppendixC(AR_w,sweep_w,taper_w,M_1,r_v,m_v);
+dw_v = AppendixC(AR_w,sweep_w,taper_w,M_1,r_v,m_v);
 %% D Forces (Drag)
 
 % Calculate Trim Drag Coefficient

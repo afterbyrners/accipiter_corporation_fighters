@@ -117,8 +117,8 @@ dt_max_rad = deg2rad(dt_max_deg); % rad
 % since cos(dt_max) is roughly about 0.94. % Linearizations can be made.
 
 %% Wing Design Parameters
-S_w = 656; % Wing Reference Area, ft^2
-AR_w = 4; % Wing Aspect Ratio, N/A
+S_w = 760; % Wing Reference Area, ft^2
+AR_w = 3.6; % Wing Aspect Ratio, N/A
 sweep_w = 40; % Wing Leading Edge Sweep, deg
 taper_w = 0.08; % Wing Taper Ratio, 
 cf_c_w = 0.5; % Wing Chord-Flap Ratio
